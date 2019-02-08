@@ -29,8 +29,6 @@ void input() {
 	cout << repeatedChar << x << endl;
 	cout << "----" << endl;
 	printf("%s%u", cstr, x);
-
-	delete cstr;
 }
 
 int relu(int x) {
