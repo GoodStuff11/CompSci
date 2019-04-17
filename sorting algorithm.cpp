@@ -1,14 +1,17 @@
 #include <cmath>
-//https://www.programmingalgorithms.com/algorithm/intro-sort?lang=C%2B%2B
-static int Partition(int* data, int left, int right) {
+#include "sorting algorithm.h"
+
+//Intro Sort Implementation in C++ - Programming Algorithms. (2019). Retrieved from https://www.programmingalgorithms.com/algorithm/intro-sort?lang=C%2B%2B
+
+int algorithm::Partition(int* data, int left, int right) {
 	int pivot = data[right];
 	int temp;
 	int i = left;
 
-	for (int j = left; j < right; ++j)
-	{
-		if (data[j] <= pivot)
-		{
+	comparisons++;
+	for (int j = left; j < right; ++j) {
+		comparisons += 2;
+		if (data[j] <= pivot) {
 			temp = data[j];
 			data[j] = data[i];
 			data[i] = temp;
@@ -22,30 +25,32 @@ static int Partition(int* data, int left, int right) {
 	return i;
 }
 
-static void QuickSortRecursive(int* data, int left, int right) {
-	if (left < right)
-	{
+void algorithm::QuickSortRecursive(int* data, int left, int right) {
+	comparisons++;
+	if (left < right) {
 		int q = Partition(data, left, right);
 		QuickSortRecursive(data, left, q - 1);
 		QuickSortRecursive(data, q + 1, right);
 	}
 }
 
-static void MaxHeapify(int* data, int heapSize, int index) {
+void algorithm::MaxHeapify(int* data, int heapSize, int index) {
 	int left = (index + 1) * 2 - 1;
 	int right = (index + 1) * 2;
 	int largest = 0;
 
+	comparisons++;
 	if (left < heapSize && data[left] > data[index])
 		largest = left;
 	else
 		largest = index;
 
+	comparisons += 2;
 	if (right < heapSize && data[right] > data[largest])
 		largest = right;
 
-	if (largest != index)
-	{
+	comparisons++;
+	if (largest != index) {
 		int temp = data[index];
 		data[index] = data[largest];
 		data[largest] = temp;
@@ -54,14 +59,18 @@ static void MaxHeapify(int* data, int heapSize, int index) {
 	}
 }
 
-static void HeapSort(int* data, int count) {
+void algorithm::HeapSort(int* data, int count) {
 	int heapSize = count;
 
-	for (int p = (heapSize - 1) / 2; p >= 0; --p)
+	comparisons++;
+	for (int p = (heapSize - 1) / 2; p >= 0; --p) {
+		comparisons++;
 		MaxHeapify(data, heapSize, p);
+	}
 
-	for (int i = count - 1; i > 0; --i)
-	{
+	comparisons++;
+	for (int i = count - 1; i > 0; --i) {
+		comparisons++;
 		int temp = data[i];
 		data[i] = data[0];
 		data[0] = temp;
@@ -71,94 +80,100 @@ static void HeapSort(int* data, int count) {
 	}
 }
 
-static void InsertionSort(int* data, int count) {
-	for (int i = 1; i < count; ++i)
-	{
+void algorithm::InsertionSort(int* data, int count) {
+	comparisons++;
+	for (int i = 1; i < count; ++i) {
+		comparisons += 2;
 		int j = i;
-
-		while ((j > 0))
-		{
-			if (data[j - 1] > data[j])
-			{
+		while ((j > 0)) {
+			comparisons += 2;
+			if (data[j - 1] > data[j]) {
 				data[j - 1] ^= data[j];
 				data[j] ^= data[j - 1];
 				data[j - 1] ^= data[j];
 
 				--j;
-			}
-			else
-			{
+			} else {
 				break;
 			}
 		}
 	}
 }
 
-static void IntroSort(int* data, int count) {
+void algorithm::IntroSort(int* data, int count) {
 	int partitionSize = Partition(data, 0, count - 1);
 
-	if (partitionSize < 16)
-	{
+
+	if (partitionSize < 16) {
+		comparisons++;
 		InsertionSort(data, count);
-	}
-	else if (partitionSize >(2 * log(count)))
-	{
+	} else if (partitionSize > (2 * log(count))) {
+		comparisons+=2;
 		HeapSort(data, count);
-	}
-	else
-	{
+	} else {
 		QuickSortRecursive(data, 0, count - 1);
+		comparisons+=3;
 	}
 }
 
-//https://www.geeksforgeeks.org/merge-sort/
-void merge(int arr[], int l, int m, int r) {
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 =  r - m;
+//Merge Sort - GeeksforGeeks. (2019). Retrieved from https://www.geeksforgeeks.org/merge-sort/
+void algorithm::merge(int arr[], int l, int m, int r) {
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
 
-    int L[n1], R[n2];
+	int L[n1], R[n2];
 
-    for (i = 0; i < n1; i++)
-        L[i] = arr[l + i];
-    for (j = 0; j < n2; j++)
-        R[j] = arr[m + 1+ j];
+	comparisons++;
+	for (i = 0; i < n1; i++){
+		comparisons++;
+		L[i] = arr[l + i];
+	}
+	comparisons++;
+	for (j = 0; j < n2; j++){
+		R[j] = arr[m + 1 + j];
+		comparisons++;
+	}
 
-    i = 0;
-    j = 0;
-    k = l;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
-        }
-        else{
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
+	i = 0;
+	j = 0;
+	k = l;
+	comparisons+=2;
+	while (i < n1 && j < n2) {
+		comparisons+=3;
+		if (L[i] <= R[j]) {
+			arr[k] = L[i];
+			i++;
+		} else {
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+	comparisons++;
+	while (i < n1) {
+		comparisons++;
+		arr[k] = L[i];
+		i++;
+		k++;
+	}
+	comparisons++;
+	while (j < n2) {
+		comparisons++;
+		arr[k] = R[j];
+		j++;
+		k++;
+	}
 }
 
-void mergeSort(int arr[], int l, int r) {
-    if (l < r) {
-        int m = l+(r-l)/2;
+void algorithm::mergeSort(int arr[], int l, int r) {
+	comparisons++;
+	if (l < r) {
+		int m = l + (r - l) / 2;
 
-        mergeSort(arr, l, m);
-        mergeSort(arr, m+1, r);
+		mergeSort(arr, l, m);
+		mergeSort(arr, m + 1, r);
 
-        merge(arr, l, m, r);
-    }
+		merge(arr, l, m, r);
+	}
 }
-
