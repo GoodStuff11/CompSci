@@ -4,6 +4,15 @@
 #include <fstream>
 using namespace std;
 
+
+void generate_array(int* array,int size){
+	//change this function as needed
+	for (int i = 0; i < size; i++) {
+		//array[i] = i;
+		//array[i] = rand();
+		array[i] = size - i;
+	}
+}
 void print_array(int* array, int size) {
 	cout << "{";
 	for (int i = 0; i < size; i++) {
@@ -23,30 +32,34 @@ double average(int* array, int size) {
 int main() {
 	algorithm *sort = new algorithm();
 
-	ofstream file("sortingSorted.csv", ios::out);
+	ofstream file("sortingReversed.csv", ios::out);
 
-	int size = 1;
+	int size = 3;
 	file
-			<< "Array size,HeapSort comparisons,MergeSort comparisons,InsertionSort comparisons"
+			<< "Array size,HeapSort comparisons,MergeSort comparisons,InsertionSort comparisons,QuickSort comparisons"
 			<< endl;
-	for (int k = 0; size < 50000; k++) {
-		size *= 2;
+	for (int k = 0; size < 400; k++) {
+		size += 3;
 		file << size << ',';
 		cout << size << endl;
 
 		int merge[100];
 		int heap[100];
 		int insertion[100];
+		int quick[100];
 		for (int reps = 0; reps < 100; reps++) {
 			int *x = new int[size];
+			generate_array(x,size);
+			//print_array(x,size);
+
+			//make copies of x
 			int *y = new int[size];
 			int *z = new int[size];
+			int *w = new int[size];
 			for (int i = 0; i < size; i++) {
-				//x[i] = rand();
-				//x[i] = size - i;
-				x[i] = i;
 				y[i] = x[i];
 				z[i] = x[i];
+				w[i] = x[i];
 			}
 
 			sort->comparisons = 0;
@@ -61,13 +74,19 @@ int main() {
 			sort->InsertionSort(z, size);
 			insertion[reps] = sort->comparisons;
 
+			sort->comparisons = 0;
+			sort->QuickSortRecursive(w, 0,size-1);
+			quick[reps] = sort->comparisons;
+
 			delete x;
 			delete y;
 			delete z;
+			delete w;
 		}
 		file << average(heap, 100) << ',';
 		file << average(merge, 100) << ',';
-		file << average(insertion, 100) << endl;
+		file << average(insertion, 100) << ',';
+		file << average(quick, 100) << endl;
 	}
 	file.close();
 	return 0;
