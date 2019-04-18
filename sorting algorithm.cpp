@@ -2,8 +2,8 @@
 #include "sorting algorithm.h"
 
 //Intro Sort Implementation in C++ - Programming Algorithms. (2019). Retrieved from https://www.programmingalgorithms.com/algorithm/intro-sort?lang=C%2B%2B
-
-int algorithm::Partition(int* data, int left, int right) {
+int comparisons;
+int Partition(int* data, int left, int right) {
 	int pivot = data[right];
 	int temp;
 	int i = left;
@@ -25,7 +25,7 @@ int algorithm::Partition(int* data, int left, int right) {
 	return i;
 }
 
-void algorithm::QuickSortRecursive(int* data, int left, int right) {
+void QuickSortRecursive(int* data, int left, int right) {
 	comparisons++;
 	if (left < right) {
 		int q = Partition(data, left, right);
@@ -34,7 +34,7 @@ void algorithm::QuickSortRecursive(int* data, int left, int right) {
 	}
 }
 
-void algorithm::MaxHeapify(int* data, int heapSize, int index) {
+void MaxHeapify(int* data, int heapSize, int index) {
 	int left = (index + 1) * 2 - 1;
 	int right = (index + 1) * 2;
 	int largest = 0;
@@ -59,7 +59,7 @@ void algorithm::MaxHeapify(int* data, int heapSize, int index) {
 	}
 }
 
-void algorithm::HeapSort(int* data, int count) {
+void HeapSort(int* data, int count) {
 	int heapSize = count;
 
 	comparisons++;
@@ -80,7 +80,7 @@ void algorithm::HeapSort(int* data, int count) {
 	}
 }
 
-void algorithm::InsertionSort(int* data, int count) {
+void InsertionSort(int* data, int count) {
 	comparisons++;
 	for (int i = 1; i < count; ++i) {
 		comparisons += 2;
@@ -100,24 +100,23 @@ void algorithm::InsertionSort(int* data, int count) {
 	}
 }
 
-void algorithm::IntroSort(int* data, int count) {
+void IntroSort(int* data, int count) {
 	int partitionSize = Partition(data, 0, count - 1);
-
 
 	if (partitionSize < 16) {
 		comparisons++;
 		InsertionSort(data, count);
 	} else if (partitionSize > (2 * log(count))) {
-		comparisons+=2;
+		comparisons += 2;
 		HeapSort(data, count);
 	} else {
 		QuickSortRecursive(data, 0, count - 1);
-		comparisons+=3;
+		comparisons += 3;
 	}
 }
 
 //Merge Sort - GeeksforGeeks. (2019). Retrieved from https://www.geeksforgeeks.org/merge-sort/
-void algorithm::merge(int arr[], int l, int m, int r) {
+void merge(int arr[], int l, int m, int r) {
 	int i, j, k;
 	int n1 = m - l + 1;
 	int n2 = r - m;
@@ -125,12 +124,12 @@ void algorithm::merge(int arr[], int l, int m, int r) {
 	int L[n1], R[n2];
 
 	comparisons++;
-	for (i = 0; i < n1; i++){
+	for (i = 0; i < n1; i++) {
 		comparisons++;
 		L[i] = arr[l + i];
 	}
 	comparisons++;
-	for (j = 0; j < n2; j++){
+	for (j = 0; j < n2; j++) {
 		R[j] = arr[m + 1 + j];
 		comparisons++;
 	}
@@ -138,9 +137,9 @@ void algorithm::merge(int arr[], int l, int m, int r) {
 	i = 0;
 	j = 0;
 	k = l;
-	comparisons+=2;
+	comparisons += 2;
 	while (i < n1 && j < n2) {
-		comparisons+=3;
+		comparisons += 3;
 		if (L[i] <= R[j]) {
 			arr[k] = L[i];
 			i++;
@@ -166,7 +165,7 @@ void algorithm::merge(int arr[], int l, int m, int r) {
 	}
 }
 
-void algorithm::mergeSort(int arr[], int l, int r) {
+void mergeSort(int arr[], int l, int r) {
 	comparisons++;
 	if (l < r) {
 		int m = l + (r - l) / 2;
