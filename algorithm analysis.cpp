@@ -4,8 +4,7 @@
 #include <fstream>
 using namespace std;
 
-
-void generate_array(int* array,int size){
+void generate_array(int* array, int size) {
 	//change this function as needed
 	for (int i = 0; i < size; i++) {
 		//array[i] = i;
@@ -29,9 +28,9 @@ double average(int* array, int size) {
 	}
 	return sum / (double) size;
 }
-int main() {
-	algorithm *sort = new algorithm();
 
+
+int main() {
 	ofstream file("sortingReversed.csv", ios::out);
 
 	int size = 3;
@@ -49,7 +48,7 @@ int main() {
 		int quick[100];
 		for (int reps = 0; reps < 100; reps++) {
 			int *x = new int[size];
-			generate_array(x,size);
+			generate_array(x, size);
 			//print_array(x,size);
 
 			//make copies of x
@@ -62,21 +61,21 @@ int main() {
 				w[i] = x[i];
 			}
 
-			sort->comparisons = 0;
-			sort->HeapSort(x, size);
-			heap[reps] = sort->comparisons;
+			comparisons = 0;
+			HeapSort(x, size);
+			heap[reps] = comparisons;
 
-			sort->comparisons = 0;
-			sort->mergeSort(y, 0, size - 1);
-			merge[reps] = sort->comparisons;
+			comparisons = 0;
+			mergeSort(y, 0, size - 1);
+			merge[reps] = comparisons;
 
-			sort->comparisons = 0;
-			sort->InsertionSort(z, size);
-			insertion[reps] = sort->comparisons;
+			comparisons = 0;
+			InsertionSort(z, size);
+			insertion[reps] = comparisons;
 
-			sort->comparisons = 0;
-			sort->QuickSortRecursive(w, 0,size-1);
-			quick[reps] = sort->comparisons;
+			comparisons = 0;
+			QuickSortRecursive(w, 0, size - 1);
+			quick[reps] = comparisons;
 
 			delete x;
 			delete y;
